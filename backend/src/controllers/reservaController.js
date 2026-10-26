@@ -1,3 +1,9 @@
-// Aquí se implementará la lógica de las reservas.
+// Llamar al archivo de datos
+const { reserva } = require('../utils/data');
 
-module.exports = {};
+// Obtener la reserva
+function obtenerReserva(req, res) {
+    return res.status(200).json(reserva);
+}
+
+module.exports = { obtenerReserva };

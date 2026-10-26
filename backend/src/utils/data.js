@@ -1,7 +1,34 @@
-// Almacenamiento temporal en memoria.
+//Datos quemados provicionalmente para el menú
+const menu = [
+    {
+        id: 1,
+        nombre: "Pupusas",
+        precio: 0.50,
+        stock: 25,
+        categoria: "Entrada"
+    },
+    {
+        id: 2,
+        nombre: "Hamburguesa",
+        precio: 2.75,
+        stock: 10,
+        categoria: "Fuerte"
+    },
+    {
+        id: 3,
+        nombre: "Horchata",
+        precio: 0.50,
+        stock: 20,
+        categoria: "Bebida"
+    }
+];
 
-const reservas = [];
-
-module.exports = {
-    reservas
+//Datos quemados provicionalmente para el menú
+const reserva = {
+    saldo: 25.00,
+    itemsReservados: [],
+    total: 0,
+    estado: "activa"
 };
+
+module.exports = { menu, reserva };

@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const juegoRoutes = require("./routes/juegoRoutes");
 const reservaRoutes = require("./routes/reservaRoutes");
+const menuRoutes = require("./routes/menuRoutes");
 
 const app = express();
 const PORT = 3000;
@@ -16,8 +17,10 @@ app.get("/", (req, res) => {
     });
 });
 
+// Rutas
 app.use("/api/juego", juegoRoutes);
 app.use("/api/reservas", reservaRoutes);
+app.use("/api/menu", menuRoutes);
 
 app.listen(PORT, () => {
     console.log(`Servidor ejecutándose en http://localhost:${PORT}`);

@@ -1,6 +1,8 @@
-const express = require("express");
-const router = express.Router();
+const { Router } = require('express');
+const reservaController = require('../controllers/reservaController');
 
-// Aquí se agregarán las rutas de reservas.
+const router = Router();
+
+router.get('/', reservaController.obtenerReserva);
 
 module.exports = router;
