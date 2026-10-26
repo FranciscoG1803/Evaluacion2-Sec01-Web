@@ -1,6 +1,8 @@
-const express = require("express");
-const router = express.Router();
+const { Router } = require('express');
+const juegoController = require('../controllers/juegoController');
 
-// Aquí se agregarán las rutas del juego.
+const router = Router();
+
+router.post('/adivinar', juegoController.adivinarNumero);
 
 module.exports = router;
