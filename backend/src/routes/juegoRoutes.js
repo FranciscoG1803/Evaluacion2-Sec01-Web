@@ -3,6 +3,6 @@ const juegoController = require('../controllers/juegoController');
 
 const router = Router();
 
-router.post('/adivinar', juegoController.adivinarNumero);
+router.post('/guess', juegoController.adivinarNumero);
 
 module.exports = router;
