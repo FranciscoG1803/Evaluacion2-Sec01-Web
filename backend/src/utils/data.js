@@ -1,3 +1,6 @@
+//Duración de la reserva en milisegundos(minutos * segundos * milisegundos)
+const DURACION_RESERVA = 0.1 * 60 * 1000; // 5 minutos
+
 //Datos quemados provicionalmente para el menú
 const menu = [
     {
@@ -28,7 +31,8 @@ const reserva = {
     saldo: 25.00,
     itemsReservados: [],
     total: 0,
-    estado: "activa"
+    estado: "activa",
+    fechaExpiracion: Date.now() + DURACION_RESERVA
 };
 
-module.exports = { menu, reserva };
+module.exports = { menu, reserva, DURACION_RESERVA };
