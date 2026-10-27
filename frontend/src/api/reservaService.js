@@ -42,4 +42,34 @@ export async function agregarAlimento(alimentoId, cantidad) {
 
     return procesarRespuesta(respuesta);
 }
-                
+
+
+//Actualizar la cantidad de porciones de un alimento reservado.
+ 
+export async function actualizarPorciones(alimentoId, cantidad) {
+    const respuesta = await fetch(
+        `${API_URL}/actualizar-porciones/${alimentoId}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ cantidad })
+        }
+    );
+
+    return procesarRespuesta(respuesta);
+}
+
+// Eliminar un alimento de la reserva.
+ 
+export async function eliminarAlimento(alimentoId) {
+    const respuesta = await fetch(
+        `${API_URL}/eliminar/${alimentoId}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    return procesarRespuesta(respuesta);
+}

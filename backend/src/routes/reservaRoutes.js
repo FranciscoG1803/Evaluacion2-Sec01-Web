@@ -8,4 +8,7 @@ router.post('/confirmar', reservaController.confirmarReserva); //Ruta para confi
 router.post('/nueva', reservaController.nuevaReserva); //Ruta para iniciar una nueva reserva
 router.post("/agregar", reservaController.agregarAlimento);
 
+router.put('/actualizar-porciones/:id', reservaController.actualizarPorciones); // Actualizar las porciones de un alimento reservado
+router.delete('/eliminar/:id', reservaController.eliminarAlimento); // Eliminar un alimento de la reserva
+
 module.exports = router;
