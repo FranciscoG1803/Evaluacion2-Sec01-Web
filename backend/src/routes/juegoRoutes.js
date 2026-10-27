@@ -1,8 +1,13 @@
-const { Router } = require('express');
-const juegoController = require('../controllers/juegoController');
+
+const { Router } = require("express");
+const juegoController = require("../controllers/juegoController");
 
 const router = Router();
 
-router.post('/guess', juegoController.adivinarNumero);
+// Enviar un intento al juego
+router.post("/guess", juegoController.adivinarNumero);
+
+// Iniciar una nueva partida
+router.post("/reset", juegoController.reiniciarJuego);
 
 module.exports = router;

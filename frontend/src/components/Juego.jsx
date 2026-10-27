@@ -1,6 +1,9 @@
 
 import { useState } from "react";
-import { enviarIntento } from "../api/juegoService";
+import {
+    enviarIntento,
+    reiniciarJuego
+} from "../api/juegoService";
 
 function Juego() {
     const [numero, setNumero] = useState("");
@@ -57,32 +60,48 @@ function Juego() {
         }
     }
 
+    // Iniciar una nueva partida y limpiar los estados
+    async function manejarReinicio() {
+        if (cargando) return;
+
+        setCargando(true);
+
+        try {
+            const datos = await reiniciarJuego();
+
+            setNumero("");
+            setIntentos([]);
+            setMensaje(datos.mensaje);
+            setResultado("");
+            setGano(false);
+        } catch (error) {
+            setMensaje(error.message);
+            setResultado("error");
+        } finally {
+            setCargando(false);
+        }
+    }
+
     return (
         <div className="container py-5">
-
             <section
                 className="card border-0 shadow-lg rounded-4 overflow-hidden mx-auto"
                 style={{ maxWidth: "680px" }}
             >
-
                 {/* CABECERA */}
                 <div className="bg-primary-subtle p-4 p-md-5 text-center">
-
                     <h1 className="fw-bold text-primary-emphasis mb-2 fs-2">
                         Adivina el número
                     </h1>
 
                     <p className="text-secondary mb-0">
-                        Elige un número entre 1 y 100. 
+                        Elige un número entre 1 y 100.
                     </p>
-
                 </div>
 
                 {/* CONTENIDO PRINCIPAL */}
                 <div className="card-body p-4 p-md-5">
-
                     <form onSubmit={manejarIntento}>
-
                         <label
                             htmlFor="numero"
                             className="form-label fw-semibold"
@@ -91,7 +110,6 @@ function Juego() {
                         </label>
 
                         <div className="row g-3">
-
                             <div className="col-12 col-sm-7">
                                 <input
                                     id="numero"
@@ -102,7 +120,9 @@ function Juego() {
                                     className="form-control form-control-lg"
                                     placeholder="Ej. 45"
                                     value={numero}
-                                    onChange={(e) => setNumero(e.target.value)}
+                                    onChange={(e) =>
+                                        setNumero(e.target.value)
+                                    }
                                     disabled={gano || cargando}
                                     required
                                 />
@@ -114,10 +134,11 @@ function Juego() {
                                     className="btn btn-primary btn-lg w-100"
                                     disabled={gano || cargando}
                                 >
-                                    {cargando ? "Comprobando..." : "Adivinar"}
+                                    {cargando
+                                        ? "Comprobando..."
+                                        : "Adivinar"}
                                 </button>
                             </div>
-
                         </div>
                     </form>
 
@@ -125,10 +146,10 @@ function Juego() {
                     {mensaje && (
                         <div
                             className={`alert ${
-                                gano
-                                    ? "alert-success"
-                                    : resultado === "error"
+                                resultado === "error"
                                     ? "alert-danger"
+                                    : gano
+                                    ? "alert-success"
                                     : "alert-info"
                             } mt-4 mb-0`}
                             role="status"
@@ -141,7 +162,6 @@ function Juego() {
 
                     {/* HISTORIAL */}
                     <div className="d-flex justify-content-between align-items-center mb-3">
-
                         <h2 className="h5 fw-bold mb-0">
                             Historial de intentos
                         </h2>
@@ -149,7 +169,6 @@ function Juego() {
                         <span className="badge rounded-pill text-bg-secondary">
                             {intentos.length} fallidos
                         </span>
-
                     </div>
 
                     {intentos.length === 0 ? (
@@ -158,7 +177,6 @@ function Juego() {
                         </p>
                     ) : (
                         <ul className="list-group">
-
                             {intentos.map((item, index) => (
                                 <li
                                     key={index}
@@ -179,7 +197,6 @@ function Juego() {
                                     </span>
                                 </li>
                             ))}
-
                         </ul>
                     )}
 
@@ -189,6 +206,19 @@ function Juego() {
                         </p>
                     )}
 
+                    {/* BOTÓN PARA NUEVA PARTIDA */}
+                    <div className="d-grid mt-4">
+                        <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={manejarReinicio}
+                            disabled={cargando}
+                        >
+                            {cargando
+                                ? "Iniciando partida..."
+                                : "Nueva partida"}
+                        </button>
+                    </div>
                 </div>
             </section>
         </div>

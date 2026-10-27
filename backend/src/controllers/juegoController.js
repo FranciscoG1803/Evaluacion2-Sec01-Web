@@ -35,4 +35,17 @@ const adivinarNumero = (req, res) => {
     });
 };
 
-module.exports = { adivinarNumero};
+// Genera un nuevo numero para comenzar otra partida
+const reiniciarJuego = (req, res) => {
+    numeroSecreto = Math.floor(Math.random() * 100) + 1;
+
+    return res.status(200).json({
+        mensaje: "Nueva partida iniciada correctamente."
+    });
+};
+
+// Exportar las funciones para utilizarlas en las rutas
+module.exports = {
+    adivinarNumero,
+    reiniciarJuego
+};
