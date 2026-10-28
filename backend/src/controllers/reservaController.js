@@ -310,33 +310,7 @@ function confirmarReserva(req, res) {
     });
 }
 
-
-// 5. INICIAR UNA NUEVA RESERVA
-
-
-function nuevaReserva(req, res) {
-    verificarVencimiento();
-
-    // Evitar iniciar otra reserva si ya hay una activa
-    if (reserva.estado === "activa") {
-        return res.status(400).json({
-            mensaje: "Ya existe una reserva activa"
-        });
-    }
-
-    // Reiniciar los datos de la reserva
-    reserva.itemsReservados = [];
-    reserva.total = 0;
-    reserva.estado = "activa";
-    reserva.fechaExpiracion = Date.now() + DURACION_RESERVA;
-
-    return res.status(200).json({
-        mensaje: "Nueva reserva iniciada correctamente",
-        data: reserva
-    });
-}
-
-// 6. EXPORTAR LAS FUNCIONES
+// 5. EXPORTAR LAS FUNCIONES
 
 
 module.exports = {
@@ -344,6 +318,5 @@ module.exports = {
     agregarAlimento,
     actualizarPorciones,
     eliminarAlimento,
-    confirmarReserva,
-    nuevaReserva
+    confirmarReserva
 };
