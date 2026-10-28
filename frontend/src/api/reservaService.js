@@ -73,3 +73,13 @@ export async function eliminarAlimento(alimentoId) {
 
     return procesarRespuesta(respuesta);
 }
+
+// Confirmar la reserva de alimentos
+
+export async function confirmarReserva() {
+    const respuesta = await fetch(`${API_URL}/confirmar`, {
+        method: "POST"
+    });
+
+    return procesarRespuesta(respuesta);
+}

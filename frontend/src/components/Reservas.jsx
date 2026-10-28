@@ -6,7 +6,8 @@ import {
     obtenerReserva,
     agregarAlimento,
     actualizarPorciones,
-    eliminarAlimento
+    eliminarAlimento,
+    confirmarReserva
 } from "../api/reservaService";
 
 function Reservas() {
@@ -140,7 +141,34 @@ function Reservas() {
         }
     }
 
+    // CONFIRMAR LA RESERVA
+    async function manejarConfirmar() {
+        if (enviando || !reservaActivaActual()) return;
+
+        setEnviando(true);
+        setMensaje("");
+
+        try {
+            const respuesta = await confirmarReserva();
+
+            await cargarDatos();
+
+            setMensaje(respuesta.mensaje);
+            setTipoMensaje("success");
+        } catch (error) {
+            setMensaje(error.message);
+            setTipoMensaje("danger");
+        } finally {
+            setEnviando(false);
+        }
+    }
+
+    function reservaActivaActual() {
+        return reserva?.estado === "activa";
+    }
+
     if (cargando) {
+        
         return (
             <div className="container py-5 text-center">
                 <p>Cargando menú...</p>
@@ -392,6 +420,21 @@ function Reservas() {
                         <span className="fs-4 fw-bold text-success">
                             ${Number(reserva?.total ?? 0).toFixed(2)}
                         </span>
+                    </div>
+                    {/* BOTÓN PARA CONFIRMAR RESERVA */}
+                    <div className="d-grid mt-4">
+                        <button
+                            type="button"
+                            className="btn btn-success btn-lg"
+                            onClick={manejarConfirmar}
+                            disabled={
+                                enviando ||
+                                !reservaActiva ||
+                                !reserva?.itemsReservados?.length
+                            }
+                        >
+                            {enviando ? "Confirmando..." : "Confirmar reserva"}
+                        </button>
                     </div>
                 </div>
             </section>
