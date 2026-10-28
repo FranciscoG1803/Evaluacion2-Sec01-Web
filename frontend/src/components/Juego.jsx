@@ -11,6 +11,7 @@ function Juego() {
     const [mensaje, setMensaje] = useState("");
     const [resultado, setResultado] = useState("");
     const [gano, setGano] = useState(false);
+    const [numeroGanador, setNumeroGanador] = useState(null);
     const [cargando, setCargando] = useState(false);
 
     async function manejarIntento(e) {
@@ -41,6 +42,7 @@ function Juego() {
 
             if (datos.resultado === "correcto") {
                 setGano(true);
+                setNumeroGanador(intento);
             } else {
                 setIntentos((anteriores) => [
                     ...anteriores,
@@ -74,6 +76,7 @@ function Juego() {
             setMensaje(datos.mensaje);
             setResultado("");
             setGano(false);
+            setNumeroGanador(null);
         } catch (error) {
             setMensaje(error.message);
             setResultado("error");
@@ -202,7 +205,7 @@ function Juego() {
 
                     {gano && (
                         <p className="text-success text-center fw-bold mt-4">
-                            ¡Felicidades! Has ganado.
+                            ¡Felicidades! Has ganado, el numero era {numeroGanador}. 
                         </p>
                     )}
 
