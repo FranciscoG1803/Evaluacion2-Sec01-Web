@@ -38,10 +38,9 @@ function obtenerReserva(req, res) {
 
 // 3. AGREGAR ALIMENTOS A LA RESERVA
 
-
 function agregarAlimento(req, res) {
 
-    // Verificar si la reserva sigue activa
+    // Verificar si la reserva sigue activa.
     verificarVencimiento();
 
     if (reserva.estado !== "activa") {
@@ -50,10 +49,10 @@ function agregarAlimento(req, res) {
         });
     }
 
-    // Obtener los datos enviados desde React
+    // Obtener los datos enviados desde React.
     const { alimentoId, cantidad } = req.body;
 
-    // Validar el ID y la cantidad
+    // Validar el ID y la cantidad.
     if (
         !Number.isInteger(alimentoId) ||
         !Number.isInteger(cantidad) ||
@@ -64,44 +63,56 @@ function agregarAlimento(req, res) {
         });
     }
 
-    // Buscar el alimento en el menú
+    // Buscar el alimento en el menú.
     const alimento = menu.find(
         (item) => item.id === alimentoId
     );
 
-    // Validar que el alimento exista
+    // Validar que el alimento exista.
     if (!alimento) {
         return res.status(404).json({
             mensaje: "Alimento no encontrado"
         });
     }
 
-    // Verificar que exista stock suficiente
+    // Verificar que exista stock suficiente.
     if (alimento.stock < cantidad) {
         return res.status(400).json({
             mensaje: "Stock insuficiente"
         });
     }
 
-    // Calcular el subtotal del alimento
+    // Calcular el subtotal del alimento.
     const subtotal = Number(
         (alimento.precio * cantidad).toFixed(2)
     );
 
-    // Buscar si el alimento ya está reservado
+    // Calcular el total que tendría la reserva si se agrega.
+    const nuevoTotal = Number(
+        (reserva.total + subtotal).toFixed(2)
+    );
+
+    // Verificar que el nuevo total no supere el saldo.
+    if (nuevoTotal > reserva.saldo) {
+        return res.status(400).json({
+            mensaje: "Saldo insuficiente. No puedes superar el límite de $25.00."
+        });
+    }
+
+    // Buscar si el alimento ya está reservado.
     const existente = reserva.itemsReservados.find(
         (item) => item.id === alimentoId
     );
 
     if (existente) {
-        // Si existe, aumentar la cantidad reservada
+        // Si existe, aumentar la cantidad reservada.
         existente.cantidad += cantidad;
 
         existente.subtotal = Number(
             (existente.cantidad * alimento.precio).toFixed(2)
         );
     } else {
-        // Si no existe, agregarlo a la reserva
+        // Si no existe, agregarlo a la reserva.
         reserva.itemsReservados.push({
             id: alimento.id,
             nombre: alimento.nombre,
@@ -111,15 +122,13 @@ function agregarAlimento(req, res) {
         });
     }
 
-    // Descontar los alimentos del inventario
+    // Descontar los alimentos del inventario.
     alimento.stock -= cantidad;
 
-    // Actualizar el total de la reserva
-    reserva.total = Number(
-        (reserva.total + subtotal).toFixed(2)
-    );
+    // Actualizar el total con el valor previamente validado.
+    reserva.total = nuevoTotal;
 
-    // Devolver la respuesta al frontend
+    // Devolver la respuesta al frontend.
     return res.status(200).json({
         mensaje: "Alimento agregado correctamente",
         reserva: reserva,

@@ -1,5 +1,5 @@
 //Duración de la reserva en milisegundos(minutos * segundos * milisegundos)
-const DURACION_RESERVA = 3 * 60 * 1000; // 5 minutos
+const DURACION_RESERVA = 5 * 60 * 1000; // 5 minutos
 
 //Datos quemados provicionalmente para el menú
 const menu = [
